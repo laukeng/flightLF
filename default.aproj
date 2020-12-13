@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<project ver="10" name="航线数据分析" libEmbed="true" icon="..." ui="win" output="FlightLF.exe" CompanyName="FairySoft.Net" FileDescription="数据分析" LegalCopyright="Copyright (C) FairySoft.Net 2018" ProductName="数据分析" InternalName="数据分析" FileVersion="0.0.0.1" ProductVersion="0.0.0.1" publishDir="/Publish/" dstrip="false">
+	<file name="main.aardio" path="main.aardio" comment="main.aardio"/>
+	<folder name="资源文件" path="res" embed="true">
+		<file name="INC.xlsx" path="res\INC.xlsx" comment="res\INC.xlsx"/>
+	</folder>
+</project>

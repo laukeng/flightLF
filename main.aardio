@@ -1,0 +1,269 @@
+import win.ui;
+import console;
+import winex; 
+import winex.key;
+import key;
+import process;
+import com.excel;
+/*DSG{{*/
+var mainForm = win.form(text="航线数据分析";right=431;bottom=155)
+mainForm.add(
+button_SendCMD={cls="button";text="发送指令";left=301;top=81;right=403;bottom=112;z=4};
+button_Start={cls="button";text="生成表格";left=300;top=22;right=402;bottom=53;z=1};
+edit_CMD={cls="edit";text="FLR:CKGPEK/./F";left=97;top=84;right=281;bottom=110;edge=1;z=5};
+edit_FileName={cls="edit";text="CKGPEK201215.xlsx";left=96;top=25;right=280;bottom=51;edge=1;z=2};
+static1={cls="static";text="文件名：";left=33;top=28;right=95;bottom=53;transparent=1;z=3};
+static2={cls="static";text="指令：";left=34;top=87;right=96;bottom=112;transparent=1;z=6}
+)
+/*}}*/
+
+mainForm.enableDpiScaling();
+var excel,book,sh;
+var tm=time.now();
+tm.format = "%y%m%d";
+mainForm.edit_FileName.text = "CKGPEK" + tostring(tm) + ".xlsx";
+
+winex.waitTimeout = 2000;
+var hwnd,,pID = winex.find(,"^eTerm 3 .");
+var logPath = process.getPath(pID);
+logPath = io.splitpath(logPath).dir + "eTerm3.log";
+var logFile = io.open (logPath,"r");
+var colStart = 0;
+
+cmdPN = function(){
+    var strOut = "";
+	hwnd = winex.find(,"^eTerm 3 .");
+	win.setForeground(hwnd);
+	hwnd = winex.waitActive(hwnd);
+	hwnd = winex.findEx(hwnd,,"^AfxFrameOrView.","");
+	hwnd = winex.getFocus(hwnd);
+	//key.combine("CTRL","A");
+	var fileLen = logFile.seek("end");	
+	winex.say("PN",hwnd);
+	winex.key.click(hwnd,"F12" );
+	for(i=1;5;1){
+		if((logFile.seek("end") - fileLen) > 80){
+			break;
+		}
+		sleep(1000);
+	}
+	logFile.seek("set", fileLen);
+	strOut = logFile.read(-1);
+	return strOut; 
+}
+
+eTermOut = function(strCMD){
+    var strOut = "";
+	hwnd = winex.find(,"^eTerm 3 .");
+	win.setForeground(hwnd);
+	hwnd = winex.waitActive(hwnd);
+	hwnd = winex.findEx(hwnd,,"^AfxFrameOrView.","");
+	hwnd = winex.getFocus(hwnd);
+	key.combine("CTRL","A");
+	var fileLen = logFile.seek("end");	
+	winex.say(strCMD,hwnd);
+	winex.key.click(hwnd,"F12" );
+	for(i=1;5;1){
+		if((logFile.seek("end") - fileLen) > 80){
+			break;
+		}
+		sleep(1000);
+	}
+	logFile.seek("set", fileLen);
+	strOut = logFile.read(-1);
+	while(string.match(strOut,"\+\n\s{80}\n\n$")){
+		strOut += cmdPN();
+	}
+	console.log(strOut);
+	return strOut; 
+}
+
+getLF = function(col,date){
+    var strGetLF = eTermOut("FLR:CKGPEK/" ++ tostring(date) ++ "/F");
+	for(i=2;100;1){
+		var strFLT = sh.Cells(i,1).getValue2();
+		if(strFLT != null && string.match(strFLT,"^[A-Za-z0-9]{5,6}$")){
+			var strRE = strFLT ++ "\s+[A-Za-z0-9]{3}\s+([0-9]+)\s+([0-9]+)\s+[0-9]+\s+[0-9]+\s+[0-9]+\s+([0-9]+)\s+";
+			var strRCNFRM,strNRCFRM,strCAP = string.match(strGetLF,strRE);
+			console.log("FLT:",strFLT,strRCNFRM,strNRCFRM,strCAP);
+		}else {
+			break;
+		}
+	}
+}
+
+readExcel = function(){
+	excel = com.excel();
+	book = excel.WorkBooks.Open(..io.fullpath("\CKGPEK.xlsx"));
+	sh = book.Worksheets("航班");
+	excel.Visible = true;
+	excel.alerts = false; //关闭所有操作提示
+	//win.setForeground(excel.hwnd);//excel窗口前置
+	
+	for(i=3;30;1){
+		var strDate = sh.Cells(1,i).getValue2();
+		if(strDate != null && string.match(strDate,"^[0-9]{1,2}[A-Za-z]{3}$")){
+			console.log(strDate);
+			getLF(i,strDate);
+		}else {
+			if(string.match(strDate,"^[0-9]{1,3}\%$")){
+				colStart = i;
+				console.log("colStart = ",colStart);
+			}
+			break;
+		}
+	}
+}
+
+
+mainForm.button_Start.oncommand = function(id,event){
+	readExcel();
+}
+
+mainForm.button_SendCMD.oncommand = function(id,event){
+	eTermOut(mainForm.edit_CMD.text);
+}
+
+old = function(id,event){
+	//数据可以从数据库获得，这里只是举例。
+	excel =com.excel();
+	var strXlsx = string.load("\res\INC.xlsx");
+	string.save("\"+mainForm.edit_FileName.text,strXlsx); 
+	book=excel.WorkBooks.Open(..io.fullpath("\"+mainForm.edit_FileName.text));
+	sh=book.Worksheets("Sheet1");
+	
+	excel.Visible=true;
+	win.setForeground(excel.hwnd);//excel窗口前置
+	
+	//CZ
+	var strEdit = mainForm.edit_CZ.text;
+	var intSeatTotal = 0;
+	for str in string.gmatch(strEdit,"< / >(\d+)< = >") { 
+   		intSeatTotal += tonumber(str);
+	}
+
+	for str in string.gmatch(strEdit,"<SEATS   TOTAL   =  >(\d+)<\s>") { 
+   		intSeatTotal += tonumber(str);
+	}
+	
+	for(i=2;5;1){
+		if(sh.Cells(i,1).getValue2() = "CZ"){
+			sh.Cells(i,3).setValue2(intSeatTotal);
+			for str in string.gmatch(strEdit,"\(([^)]*)\)") { 
+   				for strClass,intSeat in string.gmatch(str,"([\u])(\d+)") { 
+   					fillClass(i,strClass,intSeat);
+				}
+			}
+		}
+	}
+	
+	
+	
+	
+	//3U
+	strEdit = mainForm.edit_3U.text;
+	intSeatTotal = 0;
+	for str in string.gmatch(strEdit,"< / >(\d+)< = >") { 
+   		intSeatTotal += tonumber(str);
+	}
+
+	for str in string.gmatch(strEdit,"<SEATS   TOTAL   =  >(\d+)<\s>") { 
+   		intSeatTotal += tonumber(str);
+	}
+	
+	for(i=2;5;1){
+		if(sh.Cells(i,1).getValue2() = "3U"){
+			sh.Cells(i,3).setValue2(intSeatTotal);
+			for str in string.gmatch(strEdit,"\(([^)]*)\)") { 
+   				for strClass,intSeat in string.gmatch(str,"([\u])(\d+)") { 
+   					fillClass(i,strClass,intSeat);
+				}
+			}
+		}
+	}
+	
+	
+	//MU
+	strEdit = mainForm.edit_MU.text;
+	intSeatTotal = 0;
+	for str in string.gmatch(strEdit,"< / >(\d+)< = >") { 
+   		intSeatTotal += tonumber(str);
+	}
+
+	for str in string.gmatch(strEdit,"<SEATS   TOTAL   =  >(\d+)<\s>") { 
+   		intSeatTotal += tonumber(str);
+	}
+	
+	for(i=2;5;1){
+		if(sh.Cells(i,1).getValue2() = "MU"){
+			sh.Cells(i,3).setValue2(intSeatTotal);
+			for str in string.gmatch(strEdit,"\(([^)]*)\)") { 
+   				for strClass,intSeat in string.gmatch(str,"([\u])(\d+)") { 
+   					fillClass(i,strClass,intSeat);
+				}
+			}
+		}
+	}
+	
+	
+	//CA
+	strEdit = mainForm.edit_CA.text;
+	intSeatTotal = 0;
+	for str in string.gmatch(strEdit,"< / >(\d+)< = >") { 
+   		intSeatTotal += tonumber(str);
+	}
+
+	for str in string.gmatch(strEdit,"<SEATS   TOTAL   =  >(\d+)<\s>") { 
+   		intSeatTotal += tonumber(str);
+	}
+	
+	for(i=2;5;1){
+		if(sh.Cells(i,1).getValue2() = "CA"){
+			sh.Cells(i,3).setValue2(intSeatTotal);
+			for str in string.gmatch(strEdit,"\(([^)]*)\)") { 
+   				for strClass,intSeat in string.gmatch(str,"([\u])(\d+)") { 
+   					fillClass(i,strClass,intSeat);
+				}
+			}
+		}
+	}
+	
+	book.Save();
+}
+
+fillClass = function(intRow,strClass,intSeat){
+	for(i=1;26;1){
+		if(sh.Cells(1,i+6).getValue2() = "Pax_" + strClass){
+			if(sh.Cells(intRow,i+6).getValue2()){
+				intSeat += tonumber(sh.Cells(intRow,i+6).getValue2());
+			}
+			sh.Cells(intRow,i+6).setValue2(intSeat);
+		}
+	}
+}
+
+mainForm.show();
+console.log(string.match("CA4129","^[A-Za-z0-9]{5,6}$"));
+
+mainForm.beforeDestroy = function(){
+    if(logFile != null){
+    	logFile.close();
+    	logFile = null;
+    }
+    if(excel != null){
+    	excel.Quit();
+    	excel = null;	
+    }
+}
+
+mainForm.onDestroy = function(){
+    if(logFile != null){
+    	logFile.close();
+    	logFile = null;
+    }
+    if(excel != null){
+    	excel.Quit();
+    	excel = null;	
+    }
+}
+return win.loopMessage();
