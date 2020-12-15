@@ -1,63 +1,39 @@
-import win.ui;
-//import console;
+import console;
 import winex; 
 import winex.key;
 import key;
 import process;
 import com.excel;
-/*DSG{{*/
-var mainForm = win.form(text="航线数据分析";right=520;bottom=593)
-mainForm.add(
-button={cls="button";text="Button";left=327;top=14;right=390;bottom=71;z=7};
-button_SendCMD={cls="button";text="发送指令";left=178;top=52;right=280;bottom=76;dl=1;dt=1;z=3};
-button_Start={cls="button";text="打开表格";left=178;top=12;right=280;bottom=36;dl=1;dt=1;z=1};
-edit_CMD={cls="edit";text="FLR:CKGPEK/./F";left=8;top=52;right=160;bottom=76;dl=1;dt=1;edge=1;z=4};
-edit_Console={cls="edit";text="Edit";left=6;top=89;right=514;bottom=586;ah=1;aw=1;bgcolor=0;color=65280;db=1;dl=1;dr=1;dt=1;edge=1;hscroll=1;multiline=1;vscroll=1;z=6};
-edit_FileName={cls="edit";text="CKGPEK";left=8;top=12;right=119;bottom=36;dl=1;dt=1;edge=1;z=2};
-static={cls="static";text=".xlsx";left=126;top=12;right=160;bottom=36;dl=1;dt=1;transparent=1;z=5}
-)
-/*}}*/
 
-mainForm.enableDpiScaling();
 winex.waitTimeout = 2000;
+ 
+console.setTitle("CKGPEK");
+
 var excel,book,sh1,sh2,sh3;
-var logFile = null;
-var colStart = 0; //第一行舱位百分数开始的列
-var tabClasses = {}; //各公司舱位字符表
-var tabFltStops = {}; //经停航班每日客座数修正数据
-mainForm.edit_FileName.text = "CKGPEK";
 
 var hwnd,,pID = winex.find(,"^eTerm 3 .");
 if(hwnd == null || pID == null){
-	mainForm.msgboxErr("eTerm 3未运行！");
-	mainForm.close();
+	console.log("eTerm 3未运行！");
+	console.pause();
+	console.close();
+	//io.close();
 	return;
 }
 
 var logPath = process.getPath(pID);
 logPath = io.splitpath(logPath).dir + "eTerm3.log";
 if(!io.exist(logPath)){
-	mainForm.msgboxErr("日志文件" ++ logPath ++ "不存在，请检查eTerm设置。");
-	mainForm.close();
+	console.log("日志文件" ++ logPath ++ "不存在，请检查eTerm设置。");
+	console.pause();
+	console.close();
+	//io.close();
 	return;
 }
-logFile = io.open (logPath,"r")
+var logFile = io.open (logPath,"r");
 
-console_log =function(str1,str2,str3,str4,str5,str6,str7,str8){
-    var str;
-    if(str1 != null){str = str1}
-    if(str2 != null){str += " " ++ str2}
-    if(str3 != null){str += " " ++ str3}
-    if(str4 != null){str += " " ++ str4}
-    if(str5 != null){str += " " ++ str5}
-    if(str6 != null){str += " " ++ str6}
-    if(str7 != null){str += " " ++ str7}
-    if(str8 != null){str += " " ++ str8}
-    str = string.replace(str,'\n','\r\n');
-	mainForm.edit_Console.selLine = 1;
-	mainForm.edit_Console.selText = str ++ '\r\n';
-	mainForm.edit_Console.selLine = 1;
-}
+var colStart = 0; //第一行舱位百分数开始的列
+var tabClasses = {}; //各公司舱位字符表
+var tabFltStops = {}; //经停航班每日客座数修正数据
 
 cmdPN = function(){ //翻页函数
     var strOut = "";
@@ -144,7 +120,7 @@ eTermAV = function(strDate){ //eTerm输入输出函数
 }
 
 insertToSheet = function(strRow,strCol,data,colorIndex,reWrite){
-    console_log("插入数据：",strRow,strCol,data);
+    console.log("插入数据：",strRow,strCol,data);
 	var intRow = 0; //插入到的行数
 	var intCol = 0; //插入到的列数
 	for(i=2;100;1){ //从第二行开始读取第一列
@@ -214,7 +190,7 @@ getMinClass = function(strFltNo,intLF){ //获取当前客座率对应的最低�
 	for(i=2;100;1){ //从第二行开始读取第一列
 		var strCel = sh2.Cells(i,1).getValue2();
 		if(strCel == null){
-			console_log("找不到航班号：",strFltNo);
+			console.log("找不到航班号：",strFltNo);
 			return strGetMinClass; 
 			break;
 		}elseif(strCel == strFltNo){ //如果找到该航班号
@@ -250,7 +226,7 @@ getAV = function(col,date){ //检查某一个日期的所有航班号的客座�
 					strClasses = tabClasses[string.left(strFltNo,2)];
 				}
 				var strMinClass = getMinClass(strFltNo,tonumber(strLF));
-				console_log(date,strFltNo,strLF,strMinClass)
+				console.log(date,strFltNo,strLF,strMinClass)
 				if(strMinClass != null){
 					var indexMinClass = string.indexAny(strClasses,strMinClass) - 1;
 					strClasses = string.left(strClasses,indexMinClass);
@@ -376,45 +352,7 @@ readExcel = function(){
 	excel = null;
 }
 
-mainForm.button_Start.oncommand = function(id,event){
-	console_log("正在打开CKGPEK.xlsx");
-	readExcel();
-	console_log("完成!");
-}
-
-mainForm.button_SendCMD.oncommand = function(id,event){
-	console_log(eTermOut(mainForm.edit_CMD.text));
-}
-
-mainForm.beforeDestroy = function(){
-    if(logFile != null){
-    	logFile.close();
-    	logFile = null;
-    }
-    if(excel != null){
-    	excel.application.quit();
-		com.Release(excel);
-		sleep(2000);
-		excel = null;	
-    }
-}
-
-mainForm.onDestroy = function(){
-    if(logFile != null){
-    	logFile.close();
-    	logFile = null;
-    }
-    if(excel != null){
-    	excel.application.quit();
-		com.Release(excel);
-		sleep(2000);
-		excel = null;
-    }
-}
-
-mainForm.button.oncommand = function(id,event){
-	console_log("asfasfsgdsagdagfdg");
-}
-
-mainForm.show();
-return win.loopMessage();
+console.log("正在打开CKGPEK.xlsx");
+readExcel();
+console.log("完成!");
+console.pause();
