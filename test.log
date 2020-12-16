@@ -1,0 +1,196 @@
+AAA
+2020 December 15, Tuesday, 19:56:45
+SID: 51
+>SO
+SI                                                                              
+                                                                                
+
+2020 December 15, Tuesday, 19:57:09
+SID: 51
+>SI
+密码不正确                                                                      
+                                                                                
+
+2020 December 15, Tuesday, 19:57:22
+SID: 51
+>SI
+PEK143  SIGNED IN A                                                             
+LAST SI PID42990 /PEK143 AT 1944   15DEC                                      
+******************************************************                          
+尊敬的用户:                                                                     
+ 中国航信客户服务部于2019年开始,对原"航家e点通(ehelp.tr                         
+avelsky.com)"平台进行了改造升级,升级后的新平台为"智能客                         
+服平台(http://ihelp.travelsky.com)",新平台将提供更加完                          
+善的自助功能,更加美化的界面,更加安全的系统架构,力求为您                         
+提供更好的服务体验.                                                             
+   新平台已于2019年12月正式上线并全面推广使用,目前访问                          
+用户已基本完成向新平台的转移.                                                   
+   2020年8月起,旧平台中各功能使用额度将逐渐切换至新平台                         
+     +                                                                          
+
+2020 December 15, Tuesday, 19:58:05
+SID: 51
+>AV LO/CKGPEK/16DEC20/D
+ 16DEC(WED) CKGBJS DIRECT ONLY                                                  
+1-  3U8829      C6 I6 J6 P6 A6 YA BA TA HA GA  CKGPEK 0630   0855   320 0^B  E  
+>               SS LA EA VS RA KS NS XS UA D2 WA Q3 MQ ZS           T2 T3  2:25 
+               ** W1A                                                           
+2   SC1155      C8 D3 P3 I1 YA BA MA HA KA LA  CKGPEK 0700   0940   738 0^B  E  
+>               QA GA VA UA ZA TQ EQ SQ X2 NS                       T3 T3  2:40 
+3   CZ2801      J7 C7 D6 I5 OL WA S8 YA PA BA  CKGPKX 0745   1035   32Y 0^R  E  
+>               MA HA KA UA AA LA QA EA VA ZA TA NL RL GA XL        T3 --  2:50 
+4   HU7164                                     CKGPEK 0805   1035   336 0^B  E  
+>                                                                   T3 T2  2:30 
+5   CA4129      J2 C2 D1 ZQ RQ IQ YA BA MA UA  CKGPEK 0820   1105   738 0^B  E  
+>               HA QA VA WA S3 T7 LQ PQ XA NS KQ                    T3 T3  2:45 
+               ** M1A H1A                                                       
+6   CZ8814      J2 C2 D1 IL OL WA SA YA PA BA  CKGPKX 0855   1130   32L 0^D  E  
+>               MA HA KA UA AA LA QA EA VA ZA TL NL RL GA XL        T3 --  2:35 
+7+  CA4137      J4 C4 D4 Z3 R2 I1 YA BA MA UA  CKGPEK 0900   1145   73N 0^S  E  
+>               HA QA VA W5 SS TA LQ PQ XA N3 KQ                    T3 T3  2:45 
+               ** M1A                                                           
+**  FREE ACCOMADATION IN CTU OR CKG IF CONNECT TIME OVER 6 HRS 3U               
+**  FLIGHTS OF DR PLEASE CHECK IN 45 MINUTES BEFORE DEPARTURE AT CKG            
+                                                                                
+
+2020 December 15, Tuesday, 20:05:01
+SID: 51
+>FLR:CKGPEK/./F
+FLR:CKGPEK/15DEC20/F DEPARTURE LIST FROM CKG                                    
+        TIME  FLT_NO TYPE RCNFRM  NRCFRM  NOHOST  CONNECT  CNL   CAP      LF    
+CKG PEK 0630  3U8829  320   89      0       63      1      7     163     54 %   
+CKG PEK 0700  SC1155  738   78      2       57      0      16    167     47 %   
+CKG PKX 0745  CZ2801  32Y   93      5       63      8      40    207     47 %   
+CKG PEK 0820  CA4129  738   66      5       51      2      12    165     43 %   
+CKG PKX 0855  CZ8814  32L   49      31      44      0      56    188     42 %   
+CKG PEK 0900  CA4137  73N   58      1       28      0      8     174     33 %   
+CKG PEK 0915  CA4127  738   43      0       24      0      6     165     26 %   
+CKG PEK 1000  CA1450  773   131     3       96      0      29    309     43 %   
+CKG PEK 1115  CA4135  738   89      13      72      10     12    165     61 %   
+CKG PKX 1150  CA8188  73L   93      16      63      0      19    157     69 %   
+CKG PEK 1215  CA1432  738   86      23      66      1      23    165     66 %   
+CKG PEK 1310  3U8831  321   142     1       93      3      41    193     74 %   
+CKG PKX 1425  MU6684  320   53      51      27      0      30    156     66 %   
+CKG PEK 1500  CA4143  330   121     28      104     1      41    236     63 %   
+CKG PKX 1555  MF8456  738   125     0       79      0      25    163     76 %   
+CKG PEK 1630  CA1438  789   147     13      116     0      45    290     55 %   
+CKG PEK 1700  CA4147  738   56      4       49      0      7     165     36 %   
+CKG PKX 1740  CZ8812  32H   83      9       44      0      33    165     55 %   
+CKG PEK 1845  CA1440  330   102     3       70      0      27    236     44 %   
+CKG PEK 1925  CA1412  738   72      3       45      1      15    165     45 %   
+CKG PKX 1940  CZ3184  320   50      5       36      1      15    151     36 %  +
+                                                                                
+
+2020 December 15, Tuesday, 20:05:02
+SID: 51
+>PN
+        TIME  FLT_NO TYPE RCNFRM  NRCFRM  NOHOST  CONNECT  CNL   CAP      LF   -
+CKG PEK#2020  3U8820  319   46      0       36      0      27    131     35 %   
+CKG PEK 2020  CA1410  738   48      16      40      2      7     165     38 %   
+CKG PKX 2045  CZ2701  32E   39      10      35      0      49    165     29 %   
+CKG PEK#2100  3U8750  320   37      0       31      1      4     163     22 %   
+CKG PKX 2100  MU2866  32L   35      74      16      0      7     157     69 %   
+CKG PKX 2125  MF8782  738   86      8       34      0      29    169     55 %   
+CKG PKX 2125  CZ8912  32G   27      3       12      0      17    159     18 %   
+CKG PEK 2220  3U8833  320   46      3       38      0      3     163     30 %   
+                                                                                
+TOTAL                       2190    330     1532    31     650   5217    48 %   
+-END-                                                                           
+                                                                                
+
+2020 December 15, Tuesday, 20:06:27
+SID: 51
+>FLR:CKGPEK/./F
+FLR:CKGPEK/15DEC20/F DEPARTURE LIST FROM CKG                                    
+        TIME  FLT_NO TYPE RCNFRM  NRCFRM  NOHOST  CONNECT  CNL   CAP      LF    
+CKG PEK 0630  3U8829  320   89      0       63      1      7     163     54 %   
+CKG PEK 0700  SC1155  738   78      2       57      0      16    167     47 %   
+CKG PKX 0745  CZ2801  32Y   93      5       63      8      40    207     47 %   
+CKG PEK 0820  CA4129  738   66      5       51      2      12    165     43 %   
+CKG PKX 0855  CZ8814  32L   49      31      44      0      56    188     42 %   
+CKG PEK 0900  CA4137  73N   58      1       28      0      8     174     33 %   
+CKG PEK 0915  CA4127  738   43      0       24      0      6     165     26 %   
+CKG PEK 1000  CA1450  773   131     3       96      0      29    309     43 %   
+CKG PEK 1115  CA4135  738   89      13      72      10     12    165     61 %   
+CKG PKX 1150  CA8188  73L   93      16      63      0      19    157     69 %   
+CKG PEK 1215  CA1432  738   86      23      66      1      23    165     66 %   
+CKG PEK 1310  3U8831  321   142     1       93      3      41    193     74 %   
+CKG PKX 1425  MU6684  320   53      51      27      0      30    156     66 %   
+CKG PEK 1500  CA4143  330   121     28      104     1      41    236     63 %   
+CKG PKX 1555  MF8456  738   125     0       79      0      25    163     76 %   
+CKG PEK 1630  CA1438  789   147     13      116     0      45    290     55 %   
+CKG PEK 1700  CA4147  738   56      4       49      0      7     165     36 %   
+CKG PKX 1740  CZ8812  32H   83      9       44      0      33    165     55 %   
+CKG PEK 1845  CA1440  330   102     3       70      0      27    236     44 %   
+CKG PEK 1925  CA1412  738   72      3       45      1      15    165     45 %   
+CKG PKX 1940  CZ3184  320   50      5       36      1      15    151     36 %  +
+                                                                                
+
+2020 December 15, Tuesday, 20:06:28
+SID: 51
+>PN
+        TIME  FLT_NO TYPE RCNFRM  NRCFRM  NOHOST  CONNECT  CNL   CAP      LF   -
+CKG PEK#2020  3U8820  319   46      0       36      0      27    131     35 %   
+CKG PEK 2020  CA1410  738   48      16      40      2      7     165     38 %   
+CKG PKX 2045  CZ2701  32E   39      10      35      0      49    165     29 %   
+CKG PKX 2100  MU2866  32L   35      76      16      0      7     157     70 %   
+CKG PEK#2100  3U8750  320   37      0       31      1      4     163     22 %   
+CKG PKX 2125  CZ8912  32G   27      3       12      0      17    159     18 %   
+CKG PKX 2125  MF8782  738   86      8       34      0      29    169     55 %   
+CKG PEK 2220  3U8833  320   46      3       38      0      3     163     30 %   
+                                                                                
+TOTAL                       2190    332     1532    31     650   5217    48 %   
+-END-                                                                           
+                                                                                
+
+2020 December 15, Tuesday, 20:12:18
+SID: 51
+>FLR:CKGPEK/./F
+FLR:CKGPEK/15DEC20/F DEPARTURE LIST FROM CKG                                    
+        TIME  FLT_NO TYPE RCNFRM  NRCFRM  NOHOST  CONNECT  CNL   CAP      LF    
+CKG PEK 0630  3U8829  320   89      0       63      1      7     163     54 %   
+CKG PEK 0700  SC1155  738   78      2       57      0      16    167     47 %   
+CKG PKX 0745  CZ2801  32Y   93      5       63      8      40    207     47 %   
+CKG PEK 0820  CA4129  738   66      5       51      2      12    165     43 %   
+CKG PKX 0855  CZ8814  32L   49      31      44      0      56    188     42 %   
+CKG PEK 0900  CA4137  73N   58      1       28      0      8     174     33 %   
+CKG PEK 0915  CA4127  738   43      0       24      0      6     165     26 %   
+CKG PEK 1000  CA1450  773   131     3       96      0      29    309     43 %   
+CKG PEK 1115  CA4135  738   89      13      72      10     12    165     61 %   
+CKG PKX 1150  CA8188  73L   93      16      63      0      19    157     69 %   
+CKG PEK 1215  CA1432  738   86      23      66      1      23    165     66 %   
+CKG PEK 1310  3U8831  321   142     1       93      3      41    193     74 %   
+CKG PKX 1425  MU6684  320   53      51      27      0      30    156     66 %   
+CKG PEK 1500  CA4143  330   121     28      104     1      41    236     63 %   
+CKG PKX 1555  MF8456  738   125     0       79      0      25    163     76 %   
+CKG PEK 1630  CA1438  789   147     13      116     0      45    290     55 %   
+CKG PEK 1700  CA4147  738   56      4       49      0      7     165     36 %   
+CKG PKX 1740  CZ8812  32H   83      9       44      0      33    165     55 %   
+CKG PEK 1845  CA1440  330   102     3       70      0      27    236     44 %   
+CKG PEK 1925  CA1412  738   72      3       45      1      15    165     45 %   
+CKG PKX 1940  CZ3184  320   50      5       36      1      15    151     36 %  +
+                                                                                
+
+2020 December 15, Tuesday, 20:12:19
+SID: 51
+>PN
+        TIME  FLT_NO TYPE RCNFRM  NRCFRM  NOHOST  CONNECT  CNL   CAP      LF   -
+CKG PEK#2020  3U8820  319   46      0       36      0      27    131     35 %   
+CKG PEK 2020  CA1410  738   48      16      40      2      7     165     38 %   
+CKG PKX 2045  CZ2701  32E   39      10      35      0      49    165     29 %   
+CKG PEK#2100  3U8750  320   37      0       31      1      4     163     22 %   
+CKG PKX 2100  MU2866  32L   35      76      16      0      7     157     70 %   
+CKG PKX 2125  MF8782  738   86      6       32      0      31    169     54 %   
+CKG PKX 2125  CZ8912  32G   27      3       12      0      17    159     18 %   
+CKG PEK 2220  3U8833  320   48      2       39      0      3     163     30 %   
+                                                                                
+TOTAL                       2192    329     1531    31     652   5217    48 %   
+-END-                                                                           
+                                                                                
+
+2020 December 15, Tuesday, 20:12:41
+SID: 51
+>SO
+PEK143  5375    SIGNED OUT A                                                    
+                                                                                
+

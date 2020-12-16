@@ -1,5 +1,5 @@
 import win.ui;
-//import console;
+import console;
 import winex; 
 import winex.key;
 import key;
@@ -44,7 +44,7 @@ if(!io.exist(logPath)){
 logFile = io.open (logPath,"r")
 
 console_log =function(str1,str2,str3,str4,str5,str6,str7,str8){
-    var str;
+    var str = "";
     if(str1 != null){str = str1}
     if(str2 != null){str += " " ++ str2}
     if(str3 != null){str += " " ++ str3}
@@ -53,7 +53,7 @@ console_log =function(str1,str2,str3,str4,str5,str6,str7,str8){
     if(str6 != null){str += " " ++ str6}
     if(str7 != null){str += " " ++ str7}
     if(str8 != null){str += " " ++ str8}
-    str = string.replace(str,'\n','\r\n');
+    str = string.replace(str,'([^\r])\n',"\1" ++ '\r\n');
 	mainForm.edit_Console.selLine = 1;
 	mainForm.edit_Console.selText = str ++ '\r\n';
 	mainForm.edit_Console.selLine = 1;
@@ -108,7 +108,8 @@ eTermOut = function(strCMD){ //eTerm输入输出函数
 		strOut += cmdPN();
 	}
 	//console.log(strOut);
-	return strOut; 
+	strOut = string.fromto(strOut,936,65001);
+	return strOut;
 }
 
 eTermAV = function(strDate){ //eTerm输入输出函数
@@ -413,7 +414,13 @@ mainForm.onDestroy = function(){
 }
 
 mainForm.button.oncommand = function(id,event){
-	console_log("asfasfsgdsagdagfdg");
+    logFile = io.open ("\test.log","r");
+    var str = logFile.read(-1);
+    str = string.fromto(str,936,65001);
+    str = string.replace(str,'([^\r])\n',"\1" ++ '\r\n');
+    console_log(str);
+	logFile.close();
+	logFile = null
 }
 
 mainForm.show();

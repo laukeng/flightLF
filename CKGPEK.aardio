@@ -8,6 +8,7 @@ import com.excel;
 winex.waitTimeout = 2000;
  
 console.setTitle("CKGPEK");
+console.log("正在打开excel表格CKGPEK.xlsx ...");
 
 var excel,book,sh1,sh2,sh3;
 
@@ -16,8 +17,7 @@ if(hwnd == null || pID == null){
 	console.log("eTerm 3未运行！");
 	console.pause();
 	console.close();
-	//io.close();
-	return;
+	return ; 
 }
 
 var logPath = process.getPath(pID);
@@ -26,14 +26,13 @@ if(!io.exist(logPath)){
 	console.log("日志文件" ++ logPath ++ "不存在，请检查eTerm设置。");
 	console.pause();
 	console.close();
-	//io.close();
 	return;
 }
-var logFile = io.open (logPath,"r");
 
+var logFile = io.open (logPath,"r");
 var colStart = 0; //第一行舱位百分数开始的列
 var tabClasses = {}; //各公司舱位字符表
-var tabFltStops = {}; //经停航班每日客座数修正数据
+var tabFltStops = {};
 
 cmdPN = function(){ //翻页函数
     var strOut = "";
@@ -62,13 +61,21 @@ cmdPN = function(){ //翻页函数
 eTermOut = function(strCMD){ //eTerm输入输出函数
     var strOut = "";
 	hwnd = winex.find(,"^eTerm 3 .");
+/*
 	try{
-		win.setForeground(hwnd);	
+		win.setForeground(hwnd);
+		win.setActive(hwnd);
+		hwnd = winex.waitActive(hwnd);
 	}
-	hwnd = winex.waitActive(hwnd);
+*/
 	hwnd = winex.findEx(hwnd,,"^AfxFrameOrView.","");
 	hwnd = winex.getFocus(hwnd);
-	key.combine("CTRL","A");
+	if(winex.attach(hwnd,true)){
+		winex.key.combine(hwnd,"CTRL","A");
+	}else {
+		key.combine("CTRL","A");
+	}
+	
 	var fileLen = logFile.seek("end"); //记录日志文件初始指针位置
 	winex.say(strCMD,hwnd);
 	winex.key.click(hwnd,"F12" );
@@ -86,6 +93,23 @@ eTermOut = function(strCMD){ //eTerm输入输出函数
 	//console.log(strOut);
 	return strOut; 
 }
+
+var uIDs = {"5303";"5375";"5356";"5352";"5327";"5339";"5239";"5285";"5368";"32776";"30081";"66930"};
+var uID = eTermOut("DA");
+uID = string.match(uID,"A\*\s+(\d{4,5})\s+");
+if(uID = null){
+	console.log("用户未登录！");
+	console.pause();
+	console.close();
+	return; 
+}
+if(!table.find(uIDs,uID)){
+	console.log("ID: " ++ uID ++ " 未授权！");
+	console.pause();
+	console.close();
+	return; 
+}
+console.log("ID: " ++ uID ++ " 已授权使用。");
 
 eTermAV = function(strDate){ //eTerm输入输出函数
     var strOut = "";
@@ -226,11 +250,11 @@ getAV = function(col,date){ //检查某一个日期的所有航班号的客座�
 					strClasses = tabClasses[string.left(strFltNo,2)];
 				}
 				var strMinClass = getMinClass(strFltNo,tonumber(strLF));
-				console.log(date,strFltNo,strLF,strMinClass)
+				console.log(date,strFltNo,strLF ++ "%",strMinClass)
 				if(strMinClass != null){
 					var indexMinClass = string.indexAny(strClasses,strMinClass) - 1;
 					strClasses = string.left(strClasses,indexMinClass);
-					var tabStrClasses = string.split(strClasses);
+					//var tabStrClasses = string.split(strClasses);
 					var strRE = strFltNo ++ "\s{6}(.{1,40})\s{2}.{1,40}\n\>\s{15}(.{1,50})\s{2}";
 					var strFltAV1,strFltAV2 = string.match(strAV,strRE);
 					if(strFltAV1 == null){
@@ -241,8 +265,10 @@ getAV = function(col,date){ //检查某一个日期的所有航班号的客座�
 					}
 					var strFltAV = strFltAV1 ++ " " ++ strFltAV2;
 					var strInvalid = "";
-					for(j=1;table.len(tabStrClasses);1){
-						var strMatch = string.match(strFltAV,"(" ++ tabStrClasses[j] ++ "[0-9A]\s)");
+					//for(j=1;table.len(tabStrClasses);1){
+					for(j=1;#strClasses;1){
+						//var strMatch = string.match(strFltAV,"(" ++ tabStrClasses[j] ++ "[0-9A]\s)");
+						var strMatch = string.match(strFltAV,"(" ++ string.pack(strClasses[j]) ++ "[0-9A]\s)");
 						if(strMatch != null){
 							strInvalid += strMatch;
 						}
@@ -266,7 +292,11 @@ getFltStops = function(strFltNo,strFltStop){ //获取经停航班的客座数修
 			var strGetFLP = eTermOut("FLP:" ++ strFltNo ++ "/" ++ strDate);
 			var strRE = strFltStop ++ "\s+TOTAL\s+=\s+([0-9]+)\s+";
 			var strSeatStop = string.match(strGetFLP,strRE);
+			if(strSeatStop == null){
+				strSeatStop = 0;
+			}
 			tabFltStops[strFltNo][strDate] = tonumber(strSeatStop);
+			console.log(strFltNo,strDate,strFltStop ++ " TOTAL = " ++ strSeatStop);
 		}else {
 			break;
 		}
@@ -275,7 +305,7 @@ getFltStops = function(strFltNo,strFltStop){ //获取经停航班的客座数修
 
 readExcel = function(){
 	excel = com.excel();
-	excel.Visible = true;
+	excel.Visible = false;
 	//excel.alerts = false; //关闭所有操作提示
 	win.setForeground(excel.hwnd);//excel窗口前置
 	book = excel.WorkBooks.Open(..io.fullpath("\CKGPEK.xlsx"));
@@ -290,6 +320,7 @@ readExcel = function(){
 			var strClasses = sh1.Cells(i,2).getValue2();
 			if(strClasses != null && string.match(strClasses,"^[A-Za-z]+$")){
 				tabClasses[strAirLines] = strClasses;
+				console.log(strAirLines,strClasses);
 			}
 		}else {
 			break;
@@ -315,6 +346,11 @@ readExcel = function(){
 	for(i=3;30;1){
 		var strDate = sh2.Cells(1,i).getValue2();
 		if(strDate != null && string.match(strDate,"^[0-9]{1,2}[A-Za-z]{3}[0-9]{2}$")){
+			var year = tonumber(string.match(strDate,"^[0-9]{1,2}[A-Za-z]{3}([0-9]{2})$"));
+			if(year > 21){
+				console.log("此版本不支持年份：" ++ year);
+				return;
+			}
 			strDate = string.upper(strDate);
 			getLF(i,strDate);
 		}else {
@@ -338,21 +374,22 @@ readExcel = function(){
 		}else {
 			break;
 		}
-	}	
-		
-	book.save();
-	book.close();
-	sh1 = null;
-	sh2 = null;
-	sh3 = null;
-	book = null;
-	excel.application.quit();
-	com.Release(excel);
-	sleep(2000);
-	excel = null;
+	}
+	console.log("完成！数据保存在文件CKGPEK.xlsx 表名：汇总");
 }
 
-console.log("正在打开CKGPEK.xlsx");
 readExcel();
-console.log("完成!");
+book.save();
+book.close();
+sh1 = null;
+sh2 = null;
+sh3 = null;
+book = null;
+excel.application.quit();
+logFile.close();
+com.Release(excel);
+sleep(2000);
+logFile = null;
+excel = null;
+//console.log("完成!");
 console.pause();
