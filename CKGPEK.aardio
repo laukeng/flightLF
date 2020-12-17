@@ -5,6 +5,14 @@ import key;
 import process;
 import com.excel;
 
+/*
+var t = time("20DEC20", "%d%b%y","enu");
+console.log(t.dayofweek);
+console.pause();
+console.close();
+return;
+*/
+
 winex.waitTimeout = 2000;
  
 console.setTitle("CKGPEK");
@@ -94,7 +102,7 @@ eTermOut = function(strCMD){ //eTerm输入输出函数
 	return strOut; 
 }
 
-var uIDs = {"5303";"5375";"5356";"5352";"5327";"5339";"5239";"5285";"5368";"32776";"30081";"66930"};
+var uIDs = {"5303";"5375";"5356";"5352";"5327";"5339";"5239";"5285";"5368";"5369";"32776";"30081";"66930"};
 var uID = eTermOut("DA");
 uID = string.match(uID,"A\*\s+(\d{4,5})\s+");
 if(uID = null){
@@ -156,7 +164,7 @@ insertToSheet = function(strRow,strCol,data,colorIndex,reWrite){
 			break;
 		}
 	}
-	for(i=2;30;1){ //从第二行开始读取第一列
+	for(i=2;30;1){ //从第二列开始读取第一行
 		var strDate = sh3.Cells(1,i).getValue2();
 		if(strDate == strCol || strDate == null){ //如果找到该日期或者遇到空格
 			intCol = i;
@@ -201,7 +209,7 @@ getLF = function(col,date){ //获取某一个日期的所有航班号的客座�
 			if(strRCNFRM != null && strNRCFRM != null && strCAP != null){
 				strLF = tostring(math.floor((tonumber(strRCNFRM) + tonumber(strNRCFRM) + intAdj + intSeatStop) * 100 / tonumber(strCAP))) ++ "%";
 			}
-			insertToSheet(strFltNo,date,strLF,0,true);
+			insertToSheet(strFltNo,date,strLF,-4142,true);
 		}else {
 			break;
 		}
@@ -235,6 +243,62 @@ getMinClass = function(strFltNo,intLF){ //获取当前客座率对应的最低�
 		}
 	}
 	return strGetMinClass;
+}
+
+/*
+getSeatAdj = function(strFltNo,date){ //检查某航班某日修正数是否为负数
+    var intRow = 0; //插入到的行数
+	var intCol = 0; //插入到的列数
+	for(i=2;100;1){ //从第二行开始读取第一列
+		var strCel = sh2.Cells(i,1).getValue2();
+		if(strFltNo == strCel || strCel == null){ //如果找到该航班号或者遇到空格
+			intRow = i;
+			break;
+		}
+	}
+	for(i=3;30;1){ //从第三列开始读取第一行
+		var strCel = sh2.Cells(1,i).getValue2();
+		if(date == strCel || strCel == null){ //如果找到该日期或者遇到空格
+			intCol = i;
+			break;
+		}
+	}
+	var intAdj = sh2.Cells(intRow,intCol).getValue2(); //补舱或罚舱座位数
+	if(intAdj == null){
+		intAdj = 0;
+	}
+	console.log(intRow,intCol,intAdj);
+	//return tonumber(intAdj); 
+	if(tonumber(intAdj) < 0){
+		return true; 
+	}else {
+		return false; 
+	}
+}
+*/
+
+getCelColor = function(strFltNo,date){ //检查某航班某日修正数是否为负数
+    var intRow = 0; //插入到的行数
+	var intCol = 0; //插入到的列数
+	for(i=2;100;1){ //从第二行开始读取第一列
+		var strCel = sh2.Cells(i,1).getValue2();
+		if(strFltNo == strCel || strCel == null){ //如果找到该航班号或者遇到空格
+			intRow = i;
+			break;
+		}
+	}
+	for(i=3;30;1){ //从第三列开始读取第一行
+		var strCel = sh2.Cells(1,i).getValue2();
+		if(date == strCel || strCel == null){ //如果找到该日期或者遇到空格
+			intCol = i;
+			break;
+		}
+	}
+	var celColor = sh2.Cells(intRow,intCol).Interior.ColorIndex;
+	if(celColor == -4142 || celColor == -4105 || celColor == 2){
+		celColor = 0;
+	}
+	return celColor;
 }
 
 getAV = function(col,date){ //检查某一个日期的所有航班号的客座率
@@ -274,7 +338,12 @@ getAV = function(col,date){ //检查某一个日期的所有航班号的客座�
 						}
 					}
 					if(strInvalid != ""){
-						insertToSheet(strFltNo,date,strInvalid,3,false);
+						var celColor = getCelColor(strFltNo,date);
+						//console.log(strFltNo,date,celColor);
+						if(celColor == 0){
+							celColor = 3;
+						}
+						insertToSheet(strFltNo,date,strInvalid,celColor,false);
 					}
 				}
 			}		
@@ -328,7 +397,7 @@ readExcel = function(){
 	}
 
 	sh2.Select();
-	for(i=2;100;1){
+	for(i=2;100;1){ //读取经停航班信息
 		var strFltNo = sh2.Cells(i,1).getValue2(); //航班号
 		var strFltStop = sh2.Cells(i,2).getValue2(); //经停航段
 		if(strFltNo != null && string.match(strFltNo,"^[A-Za-z0-9]{5,6}$")){
@@ -343,7 +412,7 @@ readExcel = function(){
 	
 	sh3.Select();
 	sh3.Rows("1:100").NumberFormatLocal = "@";
-	for(i=3;30;1){
+	for(i=3;30;1){ //获取每一天所有航班的客座率，将数据写入到汇总表
 		var strDate = sh2.Cells(1,i).getValue2();
 		if(strDate != null && string.match(strDate,"^[0-9]{1,2}[A-Za-z]{3}[0-9]{2}$")){
 			var year = tonumber(string.match(strDate,"^[0-9]{1,2}[A-Za-z]{3}([0-9]{2})$"));
@@ -358,7 +427,7 @@ readExcel = function(){
 		}
 	}
 	
-	for(i=3;30;1){
+	for(i=3;30;1){ //寻找客座率百分数所在的列数
 		var strCel = sh2.Cells(1,i).getValue2();
 		if(strCel != null && string.match(strCel,"^[0-9]{1,3}\%$")){
 			colStart = i;
@@ -366,7 +435,7 @@ readExcel = function(){
 		}
 	}
 	
-	for(i=2;30;1){
+	for(i=2;30;1){ //检查汇总表中每一天所有航班的舱位是否符合规定
 		var strDate = sh3.Cells(1,i).getValue2();
 		if(strDate != null && string.match(strDate,"^[0-9]{1,2}[A-Za-z]{3}[0-9]{2}$")){
 			strDate = string.upper(strDate);
